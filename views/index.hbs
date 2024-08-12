@@ -1,0 +1,31 @@
+{{#if products.length}}
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+    {{#each products}}
+      <div class="col">
+        <div class="card shadow-sm">
+          <img src="{{image}}" />
+          <div class="card-body">
+            <p class="card-text fw-bold">{{title}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="p-0 m-0">{{formDate createdAt}}</p>
+              <small class="text-body-secondary fs-5">{{price}}.00$</small>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+              <a type="button" class="btn btn-outline-primary" href="/product/{{_id}}">Details</a>
+              {{#if @root.token}}
+                {{#ifequal user @root.userId}}
+                  <button type="button" class="btn btn-outline-secondary">Edit</button>
+                  <button type="button" class="btn btn-outline-danger">Delete</button>
+                {{/ifequal}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>{{/each}}
+  </div>
+{{else}}
+  <h2>No products</h2>
+{{/if}}
