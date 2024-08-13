@@ -39,6 +39,17 @@ router.get("/product/:id", async (req, res) => {
   });
 });
 
+router.get("/edit-product/:id", async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findById(id).populate("user").lean();
+
+  res.render("edit-product", {
+    title: "Edit | App",
+    product: product,
+    editProductError: req.flash("editProductError"),
+  });
+});
+
 router.post("/add-products", userMiddleware, async (req, res) => {
   const { title, description, image, price } = req.body;
   if (!title || !description || !image || !price) {
@@ -47,6 +58,27 @@ router.post("/add-products", userMiddleware, async (req, res) => {
     return;
   }
   await Product.create({ ...req.body, user: req.userId });
+  res.redirect("/");
+});
+
+router.post("/edit-product/:id", async (req, res) => {
+  const { title, description, image, price } = req.body;
+  const id = req.params.id;
+  if (!title || !description || !image || !price) {
+    req.flash("editProductError", "All fields must be filled");
+    res.redirect(`/edit-product/${id}`);
+    return;
+  }
+
+  await Product.findByIdAndUpdate(id, req.body, { new: true });
+
+  res.redirect("/products");
+});
+
+router.post("/delete-product/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await Product.findByIdAndDelete(id);
   res.redirect("/");
 });
 
