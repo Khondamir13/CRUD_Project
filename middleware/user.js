@@ -10,5 +10,7 @@ export default async function (req, res, next) {
   const decode = jwt.verify(token, process.env.JWT_SECRET);
   const user = await User.findById(decode.userId);
   req.userId = user._id;
+  req.role = user.role;
+  res.locals.role = user.role;
   next();
 }

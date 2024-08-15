@@ -72,6 +72,7 @@ router.post("/register", async (req, res) => {
     lastName: lastname,
     email: email,
     password: hashedPassword,
+    role: "user",
   };
   const user = await User.create(userData);
   const token = generateJWTToken(user._id);

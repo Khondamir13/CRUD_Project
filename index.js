@@ -13,6 +13,7 @@ import hbsHelper from "./utils/index.js";
 //Routes
 import Authroutes from "./routes/auth.js";
 import ProductsRoutes from "./routes/products.js";
+import AdminRoutes from "./routes/admin-request.js";
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use(userMiddleware);
 // ROUTES
 app.use(Authroutes);
 app.use(ProductsRoutes);
+app.use(AdminRoutes);
 
 // CONNECTION
 
