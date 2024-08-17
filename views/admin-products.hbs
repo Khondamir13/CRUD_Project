@@ -1,1 +1,42 @@
-<h1>Products</h1>
+{{#if products.length}}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Createdby</th>
+        <th scope="col">Functionality</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each products}}
+        <tr>
+          <td>{{title}}</td>
+          <td>{{price}}.00$</td>
+          <td>{{status}}</td>
+          <td>{{user.firstName}}</td>
+          <td>
+            <a type="button" class="btn btn-outline-danger" href="/admin/delete-product/{{_id}}">Delete</a>
+            <a type="button" class="btn btn-outline-warning" href="/admin/edit-product/{{_id}}">Edit</a>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <section class="page_404 w-75 mx-auto">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm-10 col-sm-offset-1 text-center">
+          <div class="four_zero_four_bg">
+            <h1 class="text-center">404</h1>
+          </div>
+          <div class="contant_box_404">
+            <h3 class="h2">No Products</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{{/if}}

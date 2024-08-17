@@ -1,1 +1,41 @@
-<h1>Users</h1>
+{{#if users.length}}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">First</th>
+        <th scope="col">Last</th>
+        <th scope="col">Email</th>
+        <th scope="col">Functionality</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+        <tr>
+          <td>{{firstName}}</td>
+          <td>{{lastName}}</td>
+          <td>{{email}}</td>
+          {{#ifequal role "user"}}
+            <td>
+              <a type="button" class="btn btn-outline-danger" href="/delete-user/{{_id}}">Delete</a>
+            </td>
+          {{/ifequal}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <section class="page_404 w-75 mx-auto">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm-10 col-sm-offset-1 text-center">
+          <div class="four_zero_four_bg">
+            <h1 class="text-center">404</h1>
+          </div>
+          <div class="contant_box_404">
+            <h3 class="h2">No Users</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{{/if}}
