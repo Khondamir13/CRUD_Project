@@ -5,7 +5,7 @@ import userMiddleware from "../middleware/user.js";
 
 const router = Router();
 router.get("/", async (req, res) => {
-  const products = await Product.find().lean();
+  const products = await Product.find({ status: "active" }).lean();
   res.render("index", {
     title: "Boom shop | App",
     products: products.reverse(),
@@ -39,7 +39,7 @@ router.get("/product/:id", async (req, res) => {
   });
 });
 
-router.get("/edit-product/:id", async (req, res) => {
+router.get("/edit-product/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
   const product = await Product.findById(id).populate("user").lean();
 
@@ -57,11 +57,11 @@ router.post("/add-products", userMiddleware, async (req, res) => {
     res.redirect("/add");
     return;
   }
-  await Product.create({ ...req.body, user: req.userId });
+  await Product.create({ ...req.body, user: req.userId, status: "pending" });
   res.redirect("/");
 });
 
-router.post("/edit-product/:id", async (req, res) => {
+router.post("/edit-product/:id", authMiddleware, async (req, res) => {
   const { title, description, image, price } = req.body;
   const id = req.params.id;
   if (!title || !description || !image || !price) {
@@ -75,7 +75,7 @@ router.post("/edit-product/:id", async (req, res) => {
   res.redirect("/products");
 });
 
-router.post("/delete-product/:id", async (req, res) => {
+router.post("/delete-product/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
 
   await Product.findByIdAndDelete(id);

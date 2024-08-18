@@ -1,4 +1,9 @@
 {{#if myProducts.length}}
+  <ul>
+    <li class="fw-bold">Active: Approved by admin, visible to everyone.</li>
+    <li class="fw-bold">Inactive: Reviewed by admin, not approved, visible only to you</li>
+    <li class="fw-bold"> Pending: Not yet reviewed by admin</li>
+  </ul>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
     {{#each myProducts}}
       <div class="col">
@@ -6,7 +11,10 @@
           <img src="{{image}}" />
           <div class="card-body">
             <p class="card-text fw-bold">{{title}}</p>
-            <p class="card-text">{{description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="card-text">{{description}}</p>
+              <p class="card-text fw-bold">Status: {{status}}</p>
+            </div>
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex gap-2 align-items-center">
                 <div class="avatar">

@@ -29,9 +29,47 @@ router.get("/admin/products", isAdmin, async (req, res) => {
   });
 });
 
-router.get("/delete-user/:id", isAdmin, async (req, res) => {
+router.get("/admin/delete-user/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
   await User.findByIdAndDelete(id);
   res.redirect("/admin/users");
 });
+
+router.get("/admin/delete-product/:id", isAdmin, async (req, res) => {
+  const id = req.params.id;
+  await Product.findByIdAndDelete(id);
+  res.redirect("/admin/products");
+});
+
+router.get("/admin/edit-product/:id", isAdmin, async (req, res) => {
+  const id = req.params.id;
+  const product = await Product.findById(id).lean();
+
+  res.render("admin-edit-product", {
+    title: "Edit | App",
+    product: product,
+    changeProduct: req.flash("changeProduct"),
+  });
+});
+
+router.post("/admin/edit-product/:id", isAdmin, async (req, res) => {
+  const { title, description, price, status } = req.body;
+  const id = req.params.id;
+  if (status == "active" || status == "inactive" || status == "pending") {
+    if (!title || !description || !price) {
+      req.flash("changeProduct", "All fields must be filled");
+      res.redirect(`/admin/edit-product/${id}`);
+      return;
+    }
+  } else {
+    req.flash("changeProduct", "Check status, You should choose three options ");
+    res.redirect(`/admin/edit-product/${id}`);
+    return;
+  }
+
+  await Product.findByIdAndUpdate(id, req.body, { new: true });
+
+  res.redirect("/admin/products");
+});
+
 export default router;
