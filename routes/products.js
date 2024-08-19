@@ -5,12 +5,21 @@ import userMiddleware from "../middleware/user.js";
 
 const router = Router();
 router.get("/", async (req, res) => {
-  const products = await Product.find({ status: "active" }).lean();
-  res.render("index", {
-    title: "Boom shop | App",
-    products: products.reverse(),
-    userId: req.userId ? req.userId.toString() : null,
-  });
+  if (!req.query.sortedBy) {
+    const products = await Product.find({ status: "active" }).lean();
+    res.render("index", {
+      title: "Boom shop | App",
+      products: products.reverse(),
+      userId: req.userId ? req.userId.toString() : null,
+    });
+  } else {
+    const products = await Product.find({ tags: req.query.sortedBy }).lean();
+    res.render("index", {
+      title: "Boom shop | App",
+      products: products.reverse(),
+      userId: req.userId ? req.userId.toString() : null,
+    });
+  }
 });
 router.get("/products", async (req, res) => {
   const user = req.userId ? req.userId.toString() : null;
