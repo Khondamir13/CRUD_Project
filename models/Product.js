@@ -8,6 +8,7 @@ const ProductSchema = new Schema(
     price: { type: Number, required: true },
     user: { type: Schema.Types.ObjectId, ref: "User" },
     status: String,
+    tags:[String]
   },
   { timestamps: true }
 );

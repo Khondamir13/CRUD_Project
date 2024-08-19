@@ -28,6 +28,17 @@
         <label for="floatingInputGroup1">Price</label>
       </div>
     </div>
+    <p>Product's tagnames:
+      {{#ifequal product.tags.length 0}}
+        No tagnames
+      {{else}}
+        {{product.tags}}
+      {{/ifequal}}
+    </p>
+    <div class="d-flex">
+      <input type="text" class="form-control" name="add_tag" id="floatingInputGroup1" placeholder="Add Tag" />
+      <input type="text" class="form-control" name="delete_tag" id="floatingInputGroup1" placeholder="Delete Tag" />
+    </div>
     <button type="submit" class="btn btn-primary mt-3">Edit product</button>
 
   </form>
