@@ -28,7 +28,7 @@ router.get("/products", async (req, res) => {
   res.render("products", {
     title: "Products | App",
     isProducts: true,
-    myProducts: myProducts,
+    myProducts: myProducts.reverse(),
   });
 });
 router.get("/add", authMiddleware, (req, res) => {

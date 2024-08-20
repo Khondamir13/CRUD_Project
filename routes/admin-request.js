@@ -81,25 +81,28 @@ router.post("/admin/edit-product/:id", isAdmin, async (req, res) => {
 // Change Order status
 router.get("/admin/active-order/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
-  const product = await Order.findById(id);
-  product.status = "active";
+  const order = await Order.findById(id).populate("product_id");
+  const product = await Product.findById(order.product_id._id);
+  await product.updateOne({ $inc: { order_number: 1 } });
   await product.save();
+  order.status = "active";
+  await order.save();
   res.redirect("/admin/orders");
 });
 
 router.get("/admin/inactive-order/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
-  const product = await Order.findById(id);
-  product.status = "inactive";
-  await product.save();
+  const order = await Order.findById(id);
+  order.status = "inactive";
+  await order.save();
   res.redirect("/admin/orders");
 });
 
 router.get("/admin/pending-order/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
-  const product = await Order.findById(id);
-  product.status = "pending";
-  await product.save();
+  const order = await Order.findById(id);
+  order.status = "pending";
+  await order.save();
   res.redirect("/admin/orders");
 });
 
