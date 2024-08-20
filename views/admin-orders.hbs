@@ -1,1 +1,52 @@
-<h1>Orders</h1>
+{{#if orders.length}}
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Product's Title</th>
+        <th scope="col">Who Order</th>
+        <th scope="col">Client's email</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Functionality</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each orders}}
+        <tr>
+          <td>{{product_id.title}}</td>
+          <td>{{ordered_by.firstName}}</td>
+          <td>{{ordered_by.email}}</td>
+          <td>{{product_id.price}}.00$</td>
+          <td>{{status}}</td>
+          <td>
+            <div class="btn-group dropend">
+              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Change status
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/admin/active-order/{{_id}}">Active Order</a></li>
+                <li><a class="dropdown-item" href="/admin/inactive-order/{{_id}}">Inactive Order</a></li>
+                <li><a class="dropdown-item" href="/admin/pending-order/{{_id}}">Pending Order</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <section class="page_404 w-75 mx-auto">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="col-sm-10 col-sm-offset-1 text-center">
+          <div class="four_zero_four_bg">
+            <h1 class="text-center">404</h1>
+          </div>
+          <div class="contant_box_404">
+            <h3 class="h2">No Orders</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{{/if}}

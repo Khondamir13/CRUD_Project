@@ -30,6 +30,12 @@
           {{/if}}
         {{/ifequal}}
 
+        {{#if isMyOrder}}
+          <a class="me-3 py-2 link-body-emphasis" href="/my-orders"> My Orders</a>
+        {{else}}
+          <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/my-orders"> My Orders</a>
+        {{/if}}
+
         {{#if isProducts}}
           <a class="me-3 py-2 link-body-emphasis" href="/products"> My Products</a>
         {{else}}

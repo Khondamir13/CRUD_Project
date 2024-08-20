@@ -2,6 +2,7 @@ import { Router } from "express";
 import Product from "../models/Product.js";
 import authMiddleware from "../middleware/auth.js";
 import userMiddleware from "../middleware/user.js";
+import Order from "../models/Order.js";
 
 const router = Router();
 router.get("/", async (req, res) => {
@@ -47,6 +48,8 @@ router.get("/product/:id", async (req, res) => {
     product: product,
   });
 });
+
+// Eidt
 
 router.get("/edit-product/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
@@ -112,4 +115,32 @@ router.post("/delete-product/:id", authMiddleware, async (req, res) => {
   res.redirect("/");
 });
 
+// Order
+router.get("/order-product/:id", authMiddleware, async (req, res) => {
+  const product_id = req.params.id;
+  const user_id = req.userId;
+  await Order.create({
+    product_id: product_id,
+    ordered_by: user_id,
+    status: "pending",
+  });
+  res.redirect("/my-orders");
+});
+
+router.get("/my-orders", authMiddleware, async (req, res) => {
+  const user = req.userId ? req.userId.toString() : null;
+  const my_orders = await Order.find({ ordered_by: user }).populate(["product_id", "ordered_by"]).lean();
+  res.render("orders", {
+    title: "Orders",
+    my_orders: my_orders.reverse(),
+    isMyOrder: true,
+  });
+});
+
+// Cancel order
+router.get("/cancel-order/:id", authMiddleware, async (req, res) => {
+  const id = req.params.id;
+  await Order.findByIdAndDelete(id);
+  res.redirect("/my-orders");
+});
 export default router;
