@@ -69,8 +69,13 @@ router.post("/add-products", userMiddleware, async (req, res) => {
     res.redirect("/add");
     return;
   }
-  const tag_array = [tag];
-  await Product.create({ ...req.body, user: req.userId, status: "pending", tags: tag_array });
+  const arr = [];
+  const tag_array = tag.split(",");
+  tag_array.forEach((result) => {
+    const res = result.trim();
+    arr.push(res);
+  });
+  await Product.create({ ...req.body, status: "pending", user: req.userId, tags: arr });
   res.redirect("/");
 });
 
@@ -84,7 +89,11 @@ router.post("/edit-product/:id", authMiddleware, async (req, res) => {
   }
   if (add_tag) {
     const product = await Product.findById(id);
-    product.tags.push(add_tag);
+    const tags = add_tag.split(",");
+    tags.forEach((result) => {
+      const res = result.trim();
+      product.tags.push(res);
+    });
     await product.save();
   }
 
