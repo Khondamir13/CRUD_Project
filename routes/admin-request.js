@@ -83,8 +83,7 @@ router.get("/admin/active-order/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
   const order = await Order.findById(id).populate("product_id");
   const product = await Product.findById(order.product_id._id);
-  await product.updateOne({ $inc: { order_number: 1 } });
-  await product.save();
+  await product.updateOne({ $inc: { order_count: 1 } });
   order.status = "active";
   await order.save();
   res.redirect("/admin/orders");

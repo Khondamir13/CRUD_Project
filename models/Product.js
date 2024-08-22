@@ -9,7 +9,7 @@ const ProductSchema = new Schema(
     user: { type: Schema.Types.ObjectId, ref: "User" },
     status: String,
     tags: [String],
-    order_number: { type: Number, default: 0 },
+    order_count: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
