@@ -2,6 +2,8 @@ import { Router } from "express";
 import Product from "../models/Product.js";
 import authMiddleware from "../middleware/auth.js";
 import userMiddleware from "../middleware/user.js";
+import belongProductMiddleware from "../middleware/belong-product.js";
+import belongOrderMiddleware from "../middleware/belong-order.js";
 import Order from "../models/Order.js";
 
 const router = Router();
@@ -51,7 +53,7 @@ router.get("/product/:id", async (req, res) => {
 
 // Eidt
 
-router.get("/edit-product/:id", authMiddleware, async (req, res) => {
+router.get("/edit-product/:id", [authMiddleware, belongProductMiddleware], async (req, res) => {
   const id = req.params.id;
   const product = await Product.findById(id).populate("user").lean();
 
@@ -147,7 +149,7 @@ router.get("/my-orders", authMiddleware, async (req, res) => {
 });
 
 // Cancel order
-router.get("/cancel-order/:id", authMiddleware, async (req, res) => {
+router.get("/cancel-order/:id", [authMiddleware, belongOrderMiddleware], async (req, res) => {
   const id = req.params.id;
   await Order.findByIdAndDelete(id);
   res.redirect("/my-orders");
