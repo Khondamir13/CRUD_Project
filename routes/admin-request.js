@@ -61,18 +61,11 @@ router.get("/admin/edit-product/:id", isAdmin, async (req, res) => {
 router.post("/admin/edit-product/:id", isAdmin, async (req, res) => {
   const { title, description, price, status } = req.body;
   const id = req.params.id;
-  if (status == "active" || status == "inactive" || status == "pending") {
-    if (!title || !description || !price) {
-      req.flash("changeProduct", "All fields must be filled");
-      res.redirect(`/admin/edit-product/${id}`);
-      return;
-    }
-  } else {
-    req.flash("changeProduct", "Check status, You should choose three options ");
+  if (!title || !description || !price) {
+    req.flash("changeProduct", "All fields must be filled");
     res.redirect(`/admin/edit-product/${id}`);
     return;
   }
-
   await Product.findByIdAndUpdate(id, req.body, { new: true });
 
   res.redirect("/admin/products");

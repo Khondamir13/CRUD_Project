@@ -7,7 +7,11 @@ const ProductSchema = new Schema(
     image: { type: String, required: true },
     price: { type: Number, required: true },
     user: { type: Schema.Types.ObjectId, ref: "User" },
-    status: String,
+    status: {
+      type: String,
+      enum: ["active", "inactive", "pending"],
+      required: true,
+    },
     tags: [String],
     order_count: { type: Number, default: 0 },
   },

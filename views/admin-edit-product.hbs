@@ -17,10 +17,13 @@
       <textarea class="form-control" placeholder="Description" name="description" id="floatingTextarea2" style="height: 120px">{{product.description}}</textarea>
       <label for="floatingTextarea2">Description</label>
     </div>
-    <p class="fw-bold">You can choose only three options to this field [active, inactive, pending]</p>
-    <div class="form-floating mb-3">
-      <input type="text" value="{{product.status}}" class="form-control" name="status" id="floatingInput" placeholder="status" />
-      <label for="floatingInput">Status</label>
+    <div class="mb-3">
+      <select name="status" id="cars" class="form-control">
+        <option disabled selected value>Select the status, current status is: {{product.status}}</option>
+        <option value="pending">Pending</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+      </select>
     </div>
     <div class="input-group mb-3">
       <span class="input-group-text bg-light">$</span>
