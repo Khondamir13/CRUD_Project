@@ -19,16 +19,15 @@
           <td>{{product_id.price}}.00$</td>
           <td>{{status}}</td>
           <td>
-            <div class="btn-group dropend">
-              <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                Change status
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/admin/active-order/{{_id}}">Active Order</a></li>
-                <li><a class="dropdown-item" href="/admin/inactive-order/{{_id}}">Inactive Order</a></li>
-                <li><a class="dropdown-item" href="/admin/pending-order/{{_id}}">Pending Order</a></li>
-              </ul>
-            </div>
+            <form action="/admin/edit-order/{{_id}}" , method="post" class="d-flex m-0 gap-2">
+              <select name="status" class="form-control">
+                <option disabled selected value>Change Status</option>
+                <option value="active">Active</option>
+                <option value="deactive">Deactive</option>
+                <option value="pending">Pending</option>
+              </select>
+              <input type="submit" value="Edit Order" class="btn btn-primary" />
+            </form>
           </td>
         </tr>
       {{/each}}

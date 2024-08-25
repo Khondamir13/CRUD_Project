@@ -72,30 +72,23 @@ router.post("/admin/edit-product/:id", isAdmin, async (req, res) => {
 });
 
 // Change Order status
-router.get("/admin/active-order/:id", isAdmin, async (req, res) => {
+router.post("/admin/edit-order/:id", isAdmin, async (req, res) => {
   const id = req.params.id;
-  const order = await Order.findById(id).populate("product_id");
-  const product = await Product.findById(order.product_id._id);
-  await product.updateOne({ $inc: { order_count: 1 } });
-  order.status = "active";
-  await order.save();
-  res.redirect("/admin/orders");
+  const changedStatus = req.body.status;
+  if (changedStatus) {
+    if (changedStatus == "active") {
+      const order = await Order.findById(id).populate("product_id");
+      const product = await Product.findById(order.product_id._id);
+      await product.updateOne({ $inc: { order_count: 1 } });
+      order.status = "active";
+      await order.save();
+      res.redirect("/admin/orders");
+    } else {
+      await Order.findByIdAndUpdate(id, req.body);
+      res.redirect("/admin/orders");
+    }
+  } else {
+    res.redirect("/admin/orders");
+  }
 });
-
-router.get("/admin/inactive-order/:id", isAdmin, async (req, res) => {
-  const id = req.params.id;
-  const order = await Order.findById(id);
-  order.status = "inactive";
-  await order.save();
-  res.redirect("/admin/orders");
-});
-
-router.get("/admin/pending-order/:id", isAdmin, async (req, res) => {
-  const id = req.params.id;
-  const order = await Order.findById(id);
-  order.status = "pending";
-  await order.save();
-  res.redirect("/admin/orders");
-});
-
 export default router;
