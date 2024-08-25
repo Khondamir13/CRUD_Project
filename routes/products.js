@@ -99,7 +99,7 @@ router.post("/edit-product/:id", authMiddleware, async (req, res) => {
     await product.save();
   }
 
-  if (delete_tag) {
+  if (delete_tag && delete_tag != 0) {
     const product = await Product.findById(id);
     const length = product.tags.length;
     product.tags.forEach(async (result, index) => {
@@ -108,11 +108,6 @@ router.post("/edit-product/:id", authMiddleware, async (req, res) => {
         await product.save();
       }
     });
-    if (length === product.tags.length) {
-      req.flash("editProductError", "Tag names you want to delete, it should be the same as the one shown in the list ");
-      res.redirect(`/edit-product/${id}`);
-      return;
-    }
   }
 
   await Product.findByIdAndUpdate(id, req.body, { new: true });

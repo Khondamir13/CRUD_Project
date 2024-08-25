@@ -28,18 +28,19 @@
         <label for="floatingInputGroup1">Price</label>
       </div>
     </div>
-    <p>Product's tagnames:
-      {{#ifequal product.tags.length 0}}
-        No tagnames
+    <div class="d-flex gap-2">
+      <input type="text" class="form-control w-50" name="add_tag" id="floatingInputGroup1" placeholder="Add Tag" />
+      {{#if product.tags.length}}
+        <select name="delete_tag" class="form-control w-50" id="cars">
+          <option value="0" selected>Select a tagname to delete</option>
+          {{#each product.tags}}
+            <option value={{this}}>{{this}}</option>
+          {{/each}}
+        </select>
       {{else}}
-        {{product.tags}}
-      {{/ifequal}}
-    </p>
-    <div class="d-flex">
-      <input type="text" class="form-control" name="add_tag" id="floatingInputGroup1" placeholder="Add Tag" />
-      <input type="text" class="form-control" name="delete_tag" id="floatingInputGroup1" placeholder="Delete Tag" />
+        <p>There are not any tagnames to delete</p>
+      {{/if}}
     </div>
     <button type="submit" class="btn btn-primary mt-3">Edit product</button>
-
   </form>
 </div>
