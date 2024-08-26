@@ -27,9 +27,9 @@
       Sort Products by Tag names
     </button>
     <ul class="dropdown-menu dropdown-menu-dark">
-      <li><a class="dropdown-item active" href="/?sortedBy=Toy">Toy</a></li>
-      <li><a class="dropdown-item" href="/?sortedBy=Film">Film</a></li>
-      <li><a class="dropdown-item" href="/?sortedBy=Book">Book</a></li>
+      {{#each uniqueArray}}
+        <li><a class="dropdown-item active" href="/?sortedBy={{this}}">{{this}}</a></li>
+      {{/each}}
     </ul>
   </div>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

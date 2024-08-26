@@ -8,21 +8,23 @@ import Order from "../models/Order.js";
 
 const router = Router();
 router.get("/", async (req, res) => {
-  if (!req.query.sortedBy) {
-    const products = await Product.find({ status: "active" }).lean();
-    res.render("index", {
-      title: "Boom shop | App",
-      products: products.reverse(),
-      userId: req.userId ? req.userId.toString() : null,
-    });
-  } else {
-    const products = await Product.find({ tags: req.query.sortedBy }).lean();
-    res.render("index", {
-      title: "Boom shop | App",
-      products: products.reverse(),
-      userId: req.userId ? req.userId.toString() : null,
-    });
-  }
+  const active_products = await Product.find({ status: "active" });
+  const tagArray = active_products.map((product) => product.tags).flat();
+  const uniqueArray = tagArray.reduce((acc, current) => {
+    if (!acc.includes(current)) {
+      acc.push(current);
+    }
+    return acc;
+  }, []);
+  const queryCondition = req.query.sortedBy ? { tags: req.query.sortedBy } : { status: "active" };
+  const products = await Product.find(queryCondition).lean();
+
+  res.render("index", {
+    title: "Boom shop | App",
+    products: products.reverse(),
+    userId: req.userId ? req.userId.toString() : null,
+    uniqueArray: uniqueArray,
+  });
 });
 router.get("/products", async (req, res) => {
   const user = req.userId ? req.userId.toString() : null;
