@@ -7,7 +7,7 @@ export default async function (req, res, next) {
   }
 
   const token = req.cookies.token;
-  const decode = jwt.verify(token, process.env.JWT_SECRET);
+  const decode = jwt.verify(token, process.env.JWT_SECRET || "Env missing");
   const user = await User.findById(decode.userId);
   req.userId = user._id;
   req.role = user.role;

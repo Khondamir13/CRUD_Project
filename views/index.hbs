@@ -27,9 +27,9 @@
       Sort Products by Tag names
     </button>
     <ul class="dropdown-menu dropdown-menu-dark">
-      <li><a class="dropdown-item active" href="/?sortedBy=Toy">Toy</a></li>
-      <li><a class="dropdown-item" href="/?sortedBy=Film">Film</a></li>
-      <li><a class="dropdown-item" href="/?sortedBy=Book">Book</a></li>
+      {{#each uniqueArray}}
+        <li><a class="dropdown-item active" href="/?sortedBy={{this}}">{{this}}</a></li>
+      {{/each}}
     </ul>
   </div>
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -39,7 +39,7 @@
           <img src="{{image}}" />
           <div class="card-body">
             <p class="card-text fw-bold">{{title}}</p>
-            <p class="card-text fw-bold"> Order Number: {{order_count}}</p>
+            <p class="card-text fw-bold"> Order Count: {{order_count}}</p>
             <div class="d-flex justify-content-between align-items-center">
               <p class="p-0 m-0">{{formDate createdAt}}</p>
               <small class="text-body-secondary fs-5">{{price}}.00$</small>

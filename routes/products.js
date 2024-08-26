@@ -8,21 +8,23 @@ import Order from "../models/Order.js";
 
 const router = Router();
 router.get("/", async (req, res) => {
-  if (!req.query.sortedBy) {
-    const products = await Product.find({ status: "active" }).lean();
-    res.render("index", {
-      title: "Boom shop | App",
-      products: products.reverse(),
-      userId: req.userId ? req.userId.toString() : null,
-    });
-  } else {
-    const products = await Product.find({ tags: req.query.sortedBy }).lean();
-    res.render("index", {
-      title: "Boom shop | App",
-      products: products.reverse(),
-      userId: req.userId ? req.userId.toString() : null,
-    });
-  }
+  const active_products = await Product.find({ status: "active" });
+  const tagArray = active_products.map((product) => product.tags).flat();
+  const uniqueArray = tagArray.reduce((acc, current) => {
+    if (!acc.includes(current)) {
+      acc.push(current);
+    }
+    return acc;
+  }, []);
+  const queryCondition = req.query.sortedBy ? { tags: req.query.sortedBy } : { status: "active" };
+  const products = await Product.find(queryCondition).lean();
+
+  res.render("index", {
+    title: "Boom shop | App",
+    products: products.reverse(),
+    userId: req.userId ? req.userId.toString() : null,
+    uniqueArray: uniqueArray,
+  });
 });
 router.get("/products", async (req, res) => {
   const user = req.userId ? req.userId.toString() : null;
@@ -123,16 +125,25 @@ router.post("/delete-product/:id", authMiddleware, async (req, res) => {
 
 // Order
 router.get("/order-product/:id", authMiddleware, async (req, res) => {
-  const product_id = req.params.id;
-  const user_id = req.userId;
-  await Order.create({
-    product_id: product_id,
-    ordered_by: user_id,
-    status: "pending",
+  res.render("order", {
+    title: "Order",
+    id: req.params.id,
+    orderProductError: req.flash("orderProductError"),
   });
-  res.redirect("/my-orders");
 });
 
+router.post("/order-product/:id", authMiddleware, async (req, res) => {
+  const product_id = req.params.id;
+  const user_id = req.userId;
+  const { pay, count, address, card_number } = req.body;
+  if (!pay || !count || !address || !pay || !card_number) {
+    req.flash("orderProductError", "All fields must be filled");
+    res.redirect(`/order-product/${product_id}`);
+    return;
+  }
+  await Order.create({ ...req.body, status: "pending", product_id: product_id, ordered_by: user_id });
+  res.redirect("/my-orders");
+});
 router.get("/my-orders", authMiddleware, async (req, res) => {
   const user = req.userId ? req.userId.toString() : null;
   const my_orders = await Order.find({ ordered_by: user }).populate(["product_id", "ordered_by"]).lean();

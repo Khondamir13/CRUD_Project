@@ -49,7 +49,7 @@ const startApp = () => {
   try {
     const PORT = process.env.PORT || 4100;
     mongoose.set("strictQuery", false);
-    mongoose.connect(process.env.MONGO_URL);
+    mongoose.connect(process.env.MONGO_URL || "Env missing ");
 
     app.listen(PORT, () => {
       console.log(`Server is running on ${PORT}-port`);

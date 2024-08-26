@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="mt-3rem">
+      <p class="fs-1">Order Details </p>
+      {{#if orderProductError}}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>Error!</strong>
+          {{orderProductError}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      {{/if}}
+      <form action="/order-product/{{id}}" , method="post">
+
+        <div class="input-group mb-2">
+          <div class="form-floating">
+            <input type="number" class="form-control" name="count" id="floatingInputGroup1" placeholder="Count" />
+            <label for="floatingInputGroup1">Count</label>
+          </div>
+        </div>
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" name="address" id="floatingInput" placeholder="Address" />
+          <label for="floatingInput">Address</label>
+        </div>
+        <select name="pay" class="form-control">
+          <option disabled selected value>Select payment </option>
+          <option value="Visa">Visa</option>
+          <option value="Uzcard">Uzcard</option>
+          <option value="Humo">Humo</option>
+        </select>
+        <div class="form-floating mt-2">
+          <input type="number" class="form-control" name="card_number" id="floatingInput" placeholder="Card Number" />
+          <label for="floatingInput">Card Number</label>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Order</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <img src="/order.png" width="70%" />
+  </div>
+</div>
