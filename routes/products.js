@@ -153,7 +153,6 @@ router.get("/my-orders", authMiddleware, async (req, res) => {
     isMyOrder: true,
   });
 });
-
 // Cancel order
 router.get("/cancel-order/:id", [authMiddleware, belongOrderMiddleware], async (req, res) => {
   const id = req.params.id;
